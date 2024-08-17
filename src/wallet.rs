@@ -2,7 +2,7 @@ use secp256k1::{
     rand::{rngs, SeedableRng},
     PublicKey, SecretKey,
 };
-use tiny_keccak::Keccak256;
+use tiny_keccak::keccak256;
 use web3::types::Address;
 pub fn generate_keypair() -> (SecretKey, PublicKey) {
     let secp = secp256k1::Secp256k1::new();
