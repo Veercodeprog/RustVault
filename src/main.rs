@@ -1,11 +1,21 @@
-use rand::rngs::OsRng;
-use secp256k1::{PublicKey, Secp256k1, SecretKey};
+mod wallet;
+use anyhow::Result;
 
-fn main() {
-    let secp = Secp256k1::new();
-    let mut rng = OsRng::new().expect("Unable to access OS random generator");
-    let (secret_key, public_key) = secp.generate_keypair(&mut rng);
+fn main() -> Result<()> {
+    let (secret_key, pub_key) = wallet::generate_keypair();
 
-    println!("Private Key: {:?}", secret_key);
-    println!("Public Key: {:?}", public_key);
+    println!("secret key: {}", &secret_key.to_string());
+    println!("public key: {}", &pub_key.to_string());
+
+    let pub_address = wallet::public_key_address(&pub_key);
+    println!("public address: {:?}", pub_address);
+    let crypto_wallet = wallet::Wallet::new(&secret_key, &pub_key);
+    println!("crypto_wallet: {:?}", &crypto_wallet);
+
+    let wallet_file_path = "crypto_wallet.json";
+    crypto_wallet.save_to_file(wallet_file_path)?;
+    let loaded_wallet = wallet::Wallet::from_file(wallet_file_path)?;
+    println!("loaded_wallet: {:?}", loaded_wallet);
+
+    Ok(())
 }
