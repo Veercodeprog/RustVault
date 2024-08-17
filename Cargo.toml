@@ -1,11 +1,16 @@
 [package]
-name = "crypto-wallet"
+name = "rust-crypto-wallet"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
-secp256k1 = "0.21.0"  # For elliptic curve cryptography
-rand = "0.8.5"        # For generating random numbers (keys)
-serde = { version = "1.0", features = ["derive"] }  # For serialization and deserialization
-serde_json = "1.0"    # For JSON handling
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[dependencies]
+anyhow = "1.0"
+dotenv = "0.15.0"
+secp256k1 = { version = "0.20.3", features = ["rand"] }
+tokio = { version= "1", features = ["full"] }
+web3 = "0.17.0"
+serde = { version = "1.0", features = ["derive"]}
+serde_json = "1.0"
+tiny-keccak = { version = "1.4" }
