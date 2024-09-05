@@ -2,6 +2,7 @@ mod wallet;
 use anyhow::Result;
 
 fn main() -> Result<()> {
+    dotenv::dotenv().ok();
     let (secret_key, pub_key) = wallet::generate_keypair();
 
     println!("secret key: {}", &secret_key.to_string());

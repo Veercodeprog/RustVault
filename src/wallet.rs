@@ -1,5 +1,5 @@
+use crate::utils;
 use anyhow::{bail, Result};
-
 use secp256k1::{
     rand::{rngs, SeedableRng},
     PublicKey, SecretKey,
