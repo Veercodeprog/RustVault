@@ -55,7 +55,7 @@ impl Wallet {
 }
 pub fn generate_keypair() -> (SecretKey, PublicKey) {
     let secp = secp256k1::Secp256k1::new();
-    let mut rng = rngs::StdRng::seed_from_u64(111);
+    let mut rng = rngs::JitterRng::new_with_timer(utils::get_nstime);
     secp.generate_keypair(&mut rng)
 }
 pub fn public_key_address(public_key: &PublicKey) -> Address {
