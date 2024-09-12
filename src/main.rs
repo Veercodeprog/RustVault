@@ -1,7 +1,10 @@
 mod wallet;
 use anyhow::Result;
+mod utils;
+use std::env;
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     dotenv::dotenv().ok();
     let (secret_key, pub_key) = wallet::generate_keypair();
 
@@ -10,6 +13,7 @@ fn main() -> Result<()> {
 
     let pub_address = wallet::public_key_address(&pub_key);
     println!("public address: {:?}", pub_address);
+
     let crypto_wallet = wallet::Wallet::new(&secret_key, &pub_key);
     println!("crypto_wallet: {:?}", &crypto_wallet);
 
@@ -17,6 +21,11 @@ fn main() -> Result<()> {
     crypto_wallet.save_to_file(wallet_file_path)?;
     let loaded_wallet = wallet::Wallet::from_file(wallet_file_path)?;
     println!("loaded_wallet: {:?}", loaded_wallet);
+
+    let endpoint = env::var("INFURA_RINKEBY_WS")?;
+    let web3_con = wallet::establish_web3_connection(&endpoint).await?;
+    let block_number = web3_con.eth().block_number().await?;
+    println!("block number: {}", &block_number);
 
     Ok(())
 }
