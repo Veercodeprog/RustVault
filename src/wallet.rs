@@ -1,4 +1,6 @@
-use crate::utils;
+mod utils;
+pub use crate::utils::get_nstime;
+
 use anyhow::{bail, Result};
 use secp256k1::{
     rand::{rngs, SeedableRng},
